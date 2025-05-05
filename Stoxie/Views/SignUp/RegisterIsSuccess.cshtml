@@ -1,0 +1,38 @@
+﻿@model Stoxie.Models.ViewModel.UserCreateVM;
+
+@{
+    ViewData["Title"] = "Kayıt Başarılı";
+}
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4 text-center" style="width: 500px; border-radius: 12px;">
+        <div class="card-body">
+            <h2 class="text-success"><i class="fas fa-check-circle"></i> Kayıt Başarılı!</h2>
+            <p class="text-muted">Tebrikler! Aşağıdaki bilgilerle hesabınız oluşturuldu.</p>
+
+            <hr>
+
+            <div class="text-start">
+                <p><strong>Ad:</strong> @Model.FirstName</p>
+                <p><strong>Soyad:</strong> @Model.LastName</p>
+                <p><strong>Email:</strong> @Model.Email</p>
+                <p><strong>Telefon:</strong> @Model.Phone</p>
+            </div>
+
+            <hr>
+
+            <div class="d-grid gap-2">
+                <a href="@Url.Action("Register", "SignUp")" class="btn btn-outline-primary">Yeni Kullanıcı Oluştur</a>
+                <a href="@Url.Action("Login", "SignIn")" class="btn btn-success">Giriş Yap</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+}
