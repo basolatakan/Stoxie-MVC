@@ -14,7 +14,7 @@ namespace Stoxie.Controllers
         {
             _context = context;
         }
-
+        
         public IActionResult Register()
         {
             return View();
@@ -29,7 +29,7 @@ namespace Stoxie.Controllers
             }
 
             _context.SignUps.Add(signUp);      // EF Core ile veri ekleme
-            _context.SaveChanges();            // Veritabanına işle
+            _context.SaveChanges();            // Veritabanına işlendi
 
 
             return RedirectToAction("RegisterIsSuccess", signUp);
