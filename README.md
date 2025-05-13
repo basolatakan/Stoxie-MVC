@@ -1,4 +1,4 @@
-Kullanılan Teknolojiler;
+**Kullanılan Teknolojiler;**
 
 - MVC Mimarisi
 - ViewBag/ViewData
