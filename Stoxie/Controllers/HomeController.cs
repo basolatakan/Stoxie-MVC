@@ -29,6 +29,7 @@ namespace Stoxie.Controllers
 
         public IActionResult Contact()
         {
+            _logger.LogInformation("İletişim bilgileri sayfası açıldı.");
             return View();
         }
 
@@ -38,25 +39,36 @@ namespace Stoxie.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogWarning("Geçersiz iletişim formu gönderildi.");
                 // Formda hata varsa tekrar göster
                 return View(model);
             }
-
-            // ViewModel → Entity'e çeviriyoruz
-            var contactMessage = new ContactMessage
+            try
             {
-                Name = model.Name,
-                Email = model.Email,
-                Message = model.Message,
-                CreateAt = DateTime.Now
-            };
+                // ViewModel → Entity'e çeviriyoruz
+                var contactMessage = new ContactMessage
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Message = model.Message,
+                    CreateAt = DateTime.Now
+                };
 
-            _context.ContactMessages.Add(contactMessage);
-            _context.SaveChanges();
+                _context.ContactMessages.Add(contactMessage);
+                _context.SaveChanges();
 
-            // Kullanıcıya mesajı başarıyla gönderildiğini bildir
-            TempData["SuccessMessage"] = "Mesajınız başarıyla gönderildi!";
-            return RedirectToAction("Contact");
+                _logger.LogInformation("İletişim formu başarıyla gönderildi. Email: {Email}", model.Email);
+                // Kullanıcıya mesajı başarıyla gönderildiğini bildir
+                TempData["SuccessMessage"] = "Mesajınız başarıyla gönderildi!";
+
+                return RedirectToAction("Contact");
+            }
+            catch (Exception ex) 
+            {
+                _logger.LogError(ex, "İletişim formu gönderilirken hata oluştu. Email: {Email}",model.Email);
+                TempData["ErrorMessage"] = "Bir hata oluştu.";
+                return View(model);
+            }           
         }
 
         public IActionResult Privacy()

@@ -18,6 +18,15 @@
                 </div>
             }
 
+            @* Hata Mesajı *@
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
             <form asp-action="Contact" asp-controller="Home" method="post">
                 <div class="mb-3">
                     <label asp-for="Name" class="form-label fw-bold"></label>
