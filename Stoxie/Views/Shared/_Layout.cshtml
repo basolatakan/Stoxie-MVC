@@ -30,27 +30,49 @@
                             <a class="nav-link text-white" asp-controller="Home" asp-action="About">Hakkımızda</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Portföyüm</a>
+                            <a class="nav-link text-white" asp-controller="Portfolio" asp-action="Index">Portföyüm</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Favorilerim</a>
+                            <a class="nav-link text-white" asp-controller="Favorite" asp-action="Index">Favorilerim</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">Market</a>
+                            <a class="nav-link text-white" asp-controller="Market" asp-action="Index">Market</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" href="#">BIST 100</a>
+                            <a class="nav-link text-white" asp-controller="Bist" asp-action="Index">BIST 100</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-controller="Home" asp-action="Contact">İletişim</a>
                         </li>
                     </ul>
 
-                    <!-- Giriş Butonları -->
-                    <div class="d-flex">
-                        <a class="btn btn-outline-light me-2" asp-controller="SignUp" asp-action="Register">Sign Up</a>
-                        <a class="btn btn-outline-light" asp-controller="SignIn" asp-action="Login">Sign In</a>
-                    </div>
+                    <div class="d-flex align-items-center">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <!-- Kullanıcı dropdown menüsü -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-light dropdown-toggle" type="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                    👋 @User.Identity.Name
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                    <li><a class="dropdown-item" asp-controller="SignIn" asp-action="Welcome">👤 Profilim</a></li>
+                                    <li>
+                                        <form method="post" asp-controller="SignIn" asp-action="Logout" class="dropdown-item p-0">
+                                            <button type="submit" class="btn w-100 text-start">🚪 Çıkış Yap</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <!-- Giriş yapılmamışsa klasik butonlar -->
+                            <div class="d-flex">
+                                <a class="btn btn-outline-light me-2" asp-controller="SignUp" asp-action="Register">Sign Up</a>
+                                <a class="btn btn-outline-light" asp-controller="SignIn" asp-action="Login">Sign In</a>
+                            </div>
+                        }
+                    </div>                    
                 </div>
             </div>
         </nav>

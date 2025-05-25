@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using Stoxie.Data;
 using Stoxie.Models;
 using Stoxie.Models.ViewModel;
+using System.Security.Claims;
 
 namespace Stoxie.Controllers
 {
@@ -25,7 +27,7 @@ namespace Stoxie.Controllers
 
         // POST: Giriş formu gönderme
         [HttpPost]
-        public IActionResult Login(SignInViewModel model)
+        public async Task<IActionResult> Login(SignInViewModel model)
         {
             _logger.LogWarning("Login denemesi yapıldı. Email: {Email}",model.Email);
 
@@ -45,10 +47,30 @@ namespace Stoxie.Controllers
                 return View(model);
             }
 
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.FirstName + " " + user.LastName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.MobilePhone, user.Phone)
+            };
+
+            var identity = new ClaimsIdentity(claims, "StoxieCookie");
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync("StoxieCookie", principal);  // kullanıcıyı sisteme login etmiş kabul ediyor.
+
             // Giriş başarılı → kullanıcıyı Welcome sayfasına yönlendir
             _logger.LogInformation("Kullanıcı başarılı şekilde giriş yaptı. Email: {Email}", model.Email);
-            return RedirectToAction("Welcome", "SignIn", user);   //RedirectToAction(actionName, controllerName, routeValues);
 
+            var userLoginVM = new UserLoginVM
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+
+            return View("Welcome", userLoginVM);
+            //return RedirectToAction("Welcome", "SignIn", user);   //RedirectToAction(actionName, controllerName, routeValues);
         }
 
         public IActionResult Welcome(UserLoginVM userLoginVM)
@@ -56,5 +78,13 @@ namespace Stoxie.Controllers
             _logger.LogInformation("Kullanıcı Welcome sayfasına yönlendirildi.");
             return View(userLoginVM);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync("StoxieCookie");
+            return RedirectToAction("Login", "SignIn");
+        }
+
     }
 }

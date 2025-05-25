@@ -19,6 +19,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<SignUpDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAuthentication("StoxieCookie").AddCookie("StoxieCookie", options =>
+{
+    options.LoginPath = "/SignIn/Login";
+    options.LogoutPath = "/SignIn/Logout";  
+    options.AccessDeniedPath = "/Home/AccessDenied";  
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(15);
+}); 
+
+builder.Services.AddAuthentication();
+
 
 var app = builder.Build();
 
@@ -36,6 +46,8 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication(); // Yetkilendirme'den önce gelmeli
 app.UseAuthorization();
+
+
 
 app.MapControllerRoute(
     name: "default",

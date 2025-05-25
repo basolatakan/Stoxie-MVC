@@ -11,13 +11,13 @@ namespace Stoxie.Controllers
         private readonly SignUpDbContext _context;
         private readonly ILogger<SignUpController> _logger;
 
-        
+
         public SignUpController(SignUpDbContext context, ILogger<SignUpController> logger)
         {
             _context = context;
             _logger = logger;
         }
-        
+
         public IActionResult Register()
         {
             _logger.LogInformation("SignUpController > Register sayfası GET ile açıldı.");
@@ -27,7 +27,7 @@ namespace Stoxie.Controllers
         [HttpPost]
         public IActionResult Register(SignUp signUp)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
             {
                 _logger.LogWarning("Sign Up formu geçersiz gönderildi.");
                 return View(signUp);
@@ -42,7 +42,7 @@ namespace Stoxie.Controllers
 
                 return RedirectToAction("RegisterIsSuccess", signUp);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Sign Up işlemi sırasında hata oluştu.");
                 return View(signUp);

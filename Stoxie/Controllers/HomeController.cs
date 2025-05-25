@@ -33,6 +33,11 @@ namespace Stoxie.Controllers
             return View();
         }
 
+        public IActionResult AccessDenied()
+        {
+            return View(); 
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Contact(ContactFormVM model)
