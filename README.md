@@ -15,4 +15,4 @@
 - Linq
 - Middleware
 - EF Core
-
+- Loglama yapısı(Serilog + Seq)
