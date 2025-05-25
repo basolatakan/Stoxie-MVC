@@ -16,3 +16,4 @@
 - Middleware
 - EF Core
 - Loglama yapısı(Serilog + Seq)
+- Cookie Tabanlı Authentication ve Authorization (Login/ Logout, [Authorize], Claims)
